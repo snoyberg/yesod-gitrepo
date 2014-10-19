@@ -15,10 +15,10 @@ cabal-version:       >=1.10
 library
   exposed-modules:     Yesod.GitRepo
   build-depends:       base < 5
-                     , classy-prelude-yesod >=0.10
+                     , classy-prelude-yesod >= 0.9
                      , temporary >=1.2
                      , directory
-                     , yesod-core >=1.4 && <1.5
+                     , yesod-core >=1.2 && <1.5
                      , wai >=3.0
                      , http-types
                      , process >=1.1
