@@ -21,13 +21,11 @@ import           Data.Foldable              (fold)
 import           Data.IORef                 (newIORef, readIORef, writeIORef)
 import           Data.Monoid                ((<>))
 import           Data.Text                  (Text, pack, unpack)
-import           Filesystem.Path.CurrentOS  (FilePath, decodeString,
-                                             encodeString)
 import           Network.HTTP.Types         (status200)
 import           Network.Wai                (responseLBS)
 import           Prelude                    (Eq, IO, Maybe (..), Monad (..),
                                              Read, Show, error, error, map,
-                                             show, ($))
+                                             show, ($), FilePath)
 import           System.Directory           (getTemporaryDirectory,
                                              removeDirectory)
 import           System.Exit                (ExitCode (ExitSuccess, ExitFailure))
@@ -70,10 +68,9 @@ gitRepo :: Text -- ^ URL
            -> IO (GitRepo a)
 gitRepo url branch refresh = do
     tmpDir <- getTemporaryDirectory
-    contentDir' <- createTempDirectory tmpDir "git-repo"
-    let contentDir = decodeString contentDir'
-    removeDirectory contentDir'
-    git Nothing ["clone", "-b", branch, url, pack contentDir']
+    contentDir <- createTempDirectory tmpDir "git-repo"
+    removeDirectory contentDir
+    git Nothing ["clone", "-b", branch, url, pack contentDir]
     ref <- refresh contentDir >>= newIORef
     var <- newEmptyMVar
     mask_ $ void $ forkIO $ forever $ do
@@ -109,7 +106,7 @@ git :: Maybe FilePath -> [Text] -> IO ()
 git mdir args = do
     (Nothing, Nothing, Nothing, ph) <- createProcess
         (proc "git" $ map unpack args)
-            { cwd = encodeString <$> mdir
+            { cwd = mdir
             }
     ec <- waitForProcess ph
     case ec of
