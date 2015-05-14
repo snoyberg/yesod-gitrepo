@@ -8,6 +8,7 @@ module Yesod.GitRepo
     , grRefresh
     , grContent
     , gitRepo
+    , gitRepoDev
     , Route (..)
     ) where
 
@@ -93,6 +94,18 @@ instance RenderRoute (GitRepo a) where
 instance ParseRoute (GitRepo a) where
     parseRoute ([], []) = Just GitRepoRoute
     parseRoute _ = Nothing
+
+-- | Like 'gitRepo', but intended to be used in a dev environment. It just uses
+-- a hard-coded @FilePath@ and reloads the contents on each request.
+--
+-- Since 0.1.1
+gitRepoDev :: FilePath
+           -> (FilePath -> IO a)
+           -> IO (GitRepo a)
+gitRepoDev fp refresh = return GitRepo
+    { grRefresh = return ()
+    , grContent = refresh fp
+    }
 
 instance YesodSubDispatch (GitRepo a) (HandlerT site IO) where
     yesodSubDispatch env _req send = do
