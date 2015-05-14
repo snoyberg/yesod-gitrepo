@@ -1,3 +1,7 @@
+## 0.2.1.0
+
+* Add back some missing changes from 0.1.1.0
+
 ## 0.2.0.0
 
 * Drop system-filepath
