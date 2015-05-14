@@ -1,6 +1,7 @@
 name:                yesod-gitrepo
-version:             0.1.0.0
+version:             0.1.1.0
 synopsis:            Host content provided by a Git repo
+description:         See README.md
 homepage:            https://github.com/snoyberg/yesod-gitrepo
 license:             MIT
 license-file:        LICENSE
