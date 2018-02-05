@@ -13,4 +13,4 @@ extra-deps:
 - unliftio-core-0.1.1.0
 - aeson-1.2.4.0
 - th-abstraction-0.2.6.0
-
+- simple-sendfile-0.2.27
