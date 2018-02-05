@@ -12,3 +12,4 @@ cabal.config
 /.stack-work/
 *.swp
 yesod-gitrepo.cabal
+*~

@@ -14,12 +14,8 @@ module Yesod.GitRepo
 
 import           Control.Applicative        ((<$>))
 import           Control.Concurrent         (forkIO)
-import           Control.Concurrent.MVar    (newEmptyMVar, takeMVar, tryPutMVar)
-import           Control.Exception          (mask_)
-import           Control.Exception.Enclosed (tryAny)
 import           Control.Monad              (forever, void)
 import           Data.Foldable              (fold)
-import           Data.IORef                 (newIORef, readIORef, writeIORef)
 import           Data.Monoid                ((<>))
 import           Data.Text                  (Text, pack, unpack)
 import           Network.HTTP.Types         (status200)
@@ -30,12 +26,14 @@ import           Prelude                    (Eq, IO, Maybe (..), Monad (..),
 import           System.Directory           (getTemporaryDirectory,
                                              removeDirectory)
 import           System.Exit                (ExitCode (ExitSuccess, ExitFailure))
-import           System.IO.Temp             (createTempDirectory)
+import           UnliftIO
+import qualified System.IO.Temp
 import           System.Process             (createProcess, cwd, proc,
                                              waitForProcess)
 import           Yesod.Core                 (ParseRoute (..), RenderRoute (..),
-                                             YesodSubDispatch (..), typePlain)
-import           Yesod.Core.Types           (HandlerT, yreSite, ysreGetSub,
+                                             YesodSubDispatch (..), typePlain,
+                                             HandlerFor)
+import           Yesod.Core.Types           (yreSite, ysreGetSub,
                                              ysreParentEnv)
 
 -- | A combination of Yesod subsite to be used for creating a refresh route, as
@@ -69,7 +67,7 @@ gitRepo :: Text -- ^ URL
            -> IO (GitRepo a)
 gitRepo url branch refresh = do
     tmpDir <- getTemporaryDirectory
-    contentDir <- createTempDirectory tmpDir "git-repo"
+    contentDir <- System.IO.Temp.createTempDirectory tmpDir "git-repo"
     removeDirectory contentDir
     git Nothing ["clone", "-b", branch, url, pack contentDir]
     ref <- refresh contentDir >>= newIORef
@@ -107,7 +105,7 @@ gitRepoDev fp refresh = return GitRepo
     , grContent = refresh fp
     }
 
-instance YesodSubDispatch (GitRepo a) (HandlerT site IO) where
+instance YesodSubDispatch (GitRepo a) site where
     yesodSubDispatch env _req send = do
         void $ forkIO $ grRefresh gr
         send $ responseLBS status200 [("Content-Type", typePlain)]

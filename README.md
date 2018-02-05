@@ -1,6 +1,9 @@
 yesod-gitrepo
 =============
 
+[![Build Status](https://travis-ci.org/snoyberg/yesod-gitrepo.svg?branch=master)](https://travis-ci.org/snoyberg/yesod-gitrepo)
+[![Build status](https://ci.appveyor.com/api/projects/status/l7vapfikbowucr2x/branch/master?svg=true)](https://ci.appveyor.com/project/snoyberg/yesod-gitrepo/branch/master)
+
 yesod-gitrepo provides a means of embedding content from a Git repository
 inside a Yesod application. The typical workflow is:
 

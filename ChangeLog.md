@@ -1,3 +1,7 @@
+## 0.3.0
+
+* Support yesod-core 1.6
+
 ## 0.2.1.0
 
 * Add back some missing changes from 0.1.1.0
