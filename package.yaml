@@ -1,0 +1,27 @@
+name:        yesod-gitrepo
+version:     0.3.0
+synopsis:    Host content provided by a Git repo
+description: Please see the README and generated docs at <https://www.stackage.org/package/yesod-gitrepo>
+category:    Web
+author:      Michael Snoyman
+maintainer:  michael@snoyman.com
+license:     MIT
+github:      snoyberg/yesod-gitrepo
+
+extra-source-files:
+- README.md
+- ChangeLog.md
+
+dependencies:
+- base >= 4.9 && < 10
+- unliftio
+- directory
+- yesod-core >= 1.6 && < 1.7
+- wai >= 3.0
+- http-types
+- process >=1.1
+- temporary
+- text
+
+library:
+  source-dirs: src
