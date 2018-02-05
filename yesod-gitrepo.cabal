@@ -18,7 +18,7 @@ library
   build-depends:       base < 5
                      , temporary >=1.2
                      , directory
-                     , yesod-core >=1.2 && <1.5
+                     , yesod-core >=1.2 && <1.7
                      , wai >=3.0
                      , http-types
                      , process >=1.1
