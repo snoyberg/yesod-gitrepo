@@ -15,6 +15,7 @@ cabal-version:       >=1.10
 
 library
   exposed-modules:     Yesod.GitRepo
+  hs-source-dirs:      src
   build-depends:       base < 5
                      , temporary >=1.2
                      , directory
